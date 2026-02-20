@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0078d4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="M365 Guru">
+<meta name="description" content="Microsoft 365 Copilot prompts, top tips, and advanced productivity guides.">
+<title>M365 Guru — Power User Hub</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0a0e1a;
+  --surface: #111827;
+  --surface2:#1a2235;
+  --border:  #1e3a5f;
+  --accent:  #0078d4;
+  --c1:      #50e6ff;
+  --c2:      #ffb900;
+  --c3:      #7fba00;
+  --c4:      #e74856;
+  --c5:      #b4a0ff;
+  --c6:      #ff9a3c;
+  --text:    #e8edf5;
+  --muted:   #6b7fa3;
+  --code-bg: #0d1526;
+  --nav-h:   64px;
+  --tab-h:   56px;
+  --safe-b:  env(safe-area-inset-bottom, 0px);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+
+body {
+  font-family:'Syne',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+}
+
+/* ─── TOP NAV ──────────────────────────────────────────── */
+.top-nav {
+  height:var(--nav-h);
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  padding:0 16px;
+  gap:12px;
+  flex-shrink:0;
+  position:relative;
+  z-index:100;
+}
+
+.logo-pill {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.logo-grid {
+  width:28px;height:28px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:2.5px;
+}
+.logo-grid span{border-radius:2px;background:var(--c1);opacity:.9;}
+.logo-grid span:nth-child(5){background:var(--c2);opacity:1;}
+
+.logo-words{display:flex;flex-direction:column;line-height:1;}
+.logo-name{font-weight:800;font-size:.85rem;letter-spacing:-.3px;color:var(--text);}
+.logo-handle{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--c1);margin-top:1px;}
+
+.search-wrap{
+  flex:1;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.search-wrap svg{
+  position:absolute;left:10px;
+  color:var(--muted);
+  width:16px;height:16px;
+  pointer-events:none;
+  flex-shrink:0;
+}
+#searchInput {
+  width:100%;
+  background:var(--code-bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:8px 12px 8px 34px;
+  font-family:'DM Mono',monospace;
+  font-size:.75rem;
+  color:var(--text);
+  outline:none;
+  transition:border-color .15s;
+}
+#searchInput:focus{border-color:var(--c1);}
+#searchInput::placeholder{color:var(--muted);}
+
+.btn-bookmark-view {
+  background:none;
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:var(--muted);
+  padding:6px 8px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-family:'DM Mono',monospace;
+  font-size:.65rem;
+  transition:all .15s;
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.btn-bookmark-view:hover,.btn-bookmark-view.active{
+  border-color:var(--c2);
+  color:var(--c2);
+}
+.bookmark-count{
+  background:var(--c2);
+  color:#0a0e1a;
+  border-radius:10px;
+  padding:1px 5px;
+  font-size:.6rem;
+  font-weight:700;
+  display:none;
+}
+.bookmark-count.show{display:inline;}
+
+/* ─── TAB BAR ──────────────────────────────────────────── */
+.tab-bar {
+  height:var(--tab-h);
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  flex-shrink:0;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.tab-bar::-webkit-scrollbar{display:none;}
+
+.tab-btn {
+  flex:1;
+  min-width:100px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  border:none;
+  background:none;
+  color:var(--muted);
+  cursor:pointer;
+  padding:4px 8px;
+  position:relative;
+  transition:color .15s;
+  font-family:'Syne',sans-serif;
+}
+.tab-btn .t-icon{font-size:1.1rem;}
+.tab-btn .t-label{font-size:.62rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;}
+.tab-btn::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:20%;right:20%;
+  height:2px;border-radius:2px;
+  background:var(--c1);
+  transform:scaleX(0);
+  transition:transform .2s;
+}
+.tab-btn.active{color:var(--c1);}
+.tab-btn.active::after{transform:scaleX(1);}
+
+/* ─── SCROLL AREA ──────────────────────────────────────── */
+.scroll-area {
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding:16px 12px calc(16px + var(--safe-b));
+}
+.scroll-area::-webkit-scrollbar{width:4px;}
+.scroll-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* ─── PANELS ───────────────────────────────────────────── */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ─── SECTION HEADER ────────────────────────────────────── */
+.section-header {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:4px 0 12px;
+}
+.sh-icon{font-size:1.3rem;}
+.sh-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.sh-title{font-size:1rem;font-weight:800;letter-spacing:-.3px;}
+.sh-count{
+  margin-left:auto;
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;
+  color:var(--muted);
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:2px 7px;
+}
+
+/* ─── FILTER CHIPS ──────────────────────────────────────── */
+.filter-chips{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.chip{
+  font-family:'DM Mono',monospace;
+  font-size:.65rem;
+  padding:4px 10px;
+  border-radius:20px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  background:none;
+  cursor:pointer;
+  transition:all .15s;
+  white-space:nowrap;
+}
+.chip.active,.chip:hover{border-color:var(--c1);color:var(--c1);}
+
+/* ─── CARDS ─────────────────────────────────────────────── */
+.card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:12px;
+  overflow:hidden;
+  animation:fadeUp .3s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+.card-head{
+  padding:14px 16px;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  border-bottom:1px solid var(--border);
+}
+.card-head-icon{font-size:1.5rem;flex-shrink:0;margin-top:1px;}
+.card-head-meta{flex:1;min-width:0;}
+.card-head-label{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  opacity:.65;
+  margin-bottom:2px;
+}
+.card-head-title{font-size:.95rem;font-weight:700;letter-spacing:-.2px;line-height:1.2;}
+.card-head-sub{font-size:.72rem;color:var(--muted);margin-top:3px;line-height:1.4;}
+.card-head-actions{display:flex;gap:6px;align-items:flex-start;flex-shrink:0;}
+
+/* ─── ACTION BUTTONS ────────────────────────────────────── */
+.btn-icon{
+  background:none;
+  border:1px solid var(--border);
+  border-radius:7px;
+  color:var(--muted);
+  width:30px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:all .15s;
+  flex-shrink:0;
+}
+.btn-icon:hover{border-color:var(--c1);color:var(--c1);}
+.btn-icon.bookmarked{border-color:var(--c2);color:var(--c2);}
+.btn-icon.copied{border-color:var(--c3);color:var(--c3);}
+
+/* ─── PROMPT BOX ────────────────────────────────────────── */
+.prompt-body{padding:14px 16px;}
+.prompt-text{
+  background:var(--code-bg);
+  border:1px solid #1a2f50;
+  border-radius:9px;
+  padding:12px 14px;
+  font-family:'DM Mono',monospace;
+  font-size:.72rem;
+  line-height:1.7;
+  color:#c8d8f0;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.prompt-placeholder{color:var(--c1);font-weight:500;}
+.prompt-tips{margin-top:12px;display:flex;flex-direction:column;gap:6px;}
+.prompt-tip{
+  display:flex;gap:8px;align-items:flex-start;
+  font-size:.72rem;color:var(--muted);line-height:1.5;
+}
+.tip-dot{width:4px;height:4px;border-radius:50%;background:var(--c1);margin-top:6px;flex-shrink:0;}
+
+/* ─── TIP ROW ───────────────────────────────────────────── */
+.tip-row{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:8px;
+  overflow:hidden;
+  animation:fadeUp .3s ease both;
+}
+.tip-row-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  cursor:pointer;
+}
+.tip-row-num{
+  font-family:'DM Mono',monospace;
+  font-size:.65rem;
+  font-weight:500;
+  min-width:22px;
+  flex-shrink:0;
+}
+.tip-row-title{font-size:.83rem;font-weight:600;flex:1;line-height:1.3;}
+.tip-row-actions{display:flex;gap:5px;flex-shrink:0;}
+.tip-row-chevron{
+  font-size:.6rem;color:var(--muted);
+  transition:transform .2s;
+  margin-left:2px;
+}
+.tip-row.open .tip-row-chevron{transform:rotate(180deg);color:var(--c1);}
+.tip-row-detail{
+  display:none;
+  padding:0 14px 14px 46px;
+  font-size:.76rem;
+  color:var(--muted);
+  line-height:1.6;
+}
+.tip-row.open .tip-row-detail{display:block;}
+.tip-example{
+  margin-top:8px;
+  background:var(--code-bg);
+  border:1px solid #1a2f50;
+  border-radius:7px;
+  padding:9px 12px;
+  font-family:'DM Mono',monospace;
+  font-size:.7rem;
+  color:#c8d8f0;
+  line-height:1.6;
+}
+.tip-example-label{
+  font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--c1);opacity:.8;margin-bottom:3px;
+}
+
+/* ─── EMPTY STATE ───────────────────────────────────────── */
+.empty-state{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--muted);
+}
+.empty-state .e-icon{font-size:3rem;margin-bottom:12px;opacity:.4;}
+.empty-state p{font-size:.82rem;line-height:1.6;}
+
+/* ─── SEARCH RESULTS ────────────────────────────────────── */
+.search-tag{
+  display:inline-block;
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;
+  padding:2px 7px;
+  border-radius:4px;
+  margin-bottom:6px;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+}
+.tag-prompt{background:rgba(80,230,255,.12);color:var(--c1);}
+.tag-tip{background:rgba(255,185,0,.12);color:var(--c2);}
+.tag-advanced{background:rgba(127,186,0,.12);color:var(--c3);}
+
+/* ─── COLOR ACCENTS ─────────────────────────────────────── */
+.ac1{--ac:var(--c1);} .ac2{--ac:var(--c2);} .ac3{--ac:var(--c3);}
+.ac4{--ac:var(--c4);} .ac5{--ac:var(--c5);} .ac6{--ac:var(--c6);}
+[class^="ac"] .card-head{border-left:3px solid var(--ac);}
+[class^="ac"] .card-head-label{color:var(--ac);}
+[class^="ac"] .tip-row-num{color:var(--ac);}
+[class^="ac"] .tip-dot{background:var(--ac);}
+
+/* ─── INSTALL BANNER ────────────────────────────────────── */
+#installBanner{
+  display:none;
+  background:linear-gradient(135deg,var(--surface) 0%,#0d1f3c 100%);
+  border-bottom:1px solid var(--border);
+  padding:10px 14px;
+  flex-shrink:0;
+}
+.install-inner{display:flex;align-items:center;gap:10px;}
+.install-text{flex:1;font-size:.75rem;color:var(--muted);line-height:1.4;}
+.install-text strong{color:var(--text);display:block;margin-bottom:2px;}
+.btn-install{
+  background:var(--accent);
+  border:none;
+  border-radius:8px;
+  color:#fff;
+  font-family:'DM Mono',monospace;
+  font-size:.68rem;
+  padding:7px 12px;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.btn-dismiss{
+  background:none;border:none;color:var(--muted);
+  font-size:1.1rem;cursor:pointer;padding:2px 4px;flex-shrink:0;
+}
+
+/* ─── TOAST ─────────────────────────────────────────────── */
+#toast{
+  position:fixed;bottom:calc(20px + var(--safe-b));left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 18px;
+  font-family:'DM Mono',monospace;
+  font-size:.72rem;
+  color:var(--text);
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .2s,transform .2s;
+  z-index:999;
+  white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ─── SECTION GROUP LABEL ────────────────────────────────── */
+.group-label{
+  font-family:'DM Mono',monospace;
+  font-size:.62rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:4px 0 8px;
+  margin-top:8px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:10px;
+}
+.group-label:first-child{margin-top:0;}
+</style>
+</head>
+<body>
+
+<!-- INSTALL BANNER -->
+<div id="installBanner">
+  <div class="install-inner">
+    <div class="logo-grid" style="width:32px;height:32px;flex-shrink:0;">
+      <span></span><span></span><span></span>
+      <span></span><span style="background:var(--c2)"></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+    <div class="install-text">
+      <strong>Install M365 Guru</strong>
+      Add to your home screen for offline access
+    </div>
+    <button class="btn-install" id="btnInstall">Install</button>
+    <button class="btn-dismiss" id="btnDismiss">✕</button>
+  </div>
+</div>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="logo-pill">
+    <div class="logo-grid">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+    <div class="logo-words">
+      <span class="logo-name">M365 GURU</span>
+      <span class="logo-handle">@the.m365.guru</span>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input id="searchInput" type="search" placeholder="Search tips, prompts…" autocomplete="off">
+  </div>
+
+  <button class="btn-bookmark-view" id="btnBookmarks">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7a2 2 0 0 0-2 2v16l7-3 7 3V5a2 2 0 0 0-2-2z"/></svg>
+    <span id="bookmarkCount" class="bookmark-count">0</span>
+  </button>
+</nav>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-panel="prompts">
+    <span class="t-icon">⚡</span>
+    <span class="t-label">Prompts</span>
+  </button>
+  <button class="tab-btn" data-panel="tips50">
+    <span class="t-icon">💡</span>
+    <span class="t-label">Top 50</span>
+  </button>
+  <button class="tab-btn" data-panel="advanced">
+    <span class="t-icon">🚀</span>
+    <span class="t-label">Advanced</span>
+  </button>
+  <button class="tab-btn" data-panel="bookmarks">
+    <span class="t-icon">🔖</span>
+    <span class="t-label">Saved</span>
+  </button>
+</div>
+
+<!-- SCROLL AREA -->
+<div class="scroll-area" id="scrollArea">
+
+  <!-- ── PROMPTS PANEL ─────────────────────────────────── -->
+  <div class="panel active" id="panel-prompts"></div>
+
+  <!-- ── TOP 50 PANEL ──────────────────────────────────── -->
+  <div class="panel" id="panel-tips50">
+    <div class="filter-chips" id="tipsFilter">
+      <button class="chip active" data-filter="All">All</button>
+      <button class="chip" data-filter="General">General</button>
+      <button class="chip" data-filter="Word">Word</button>
+      <button class="chip" data-filter="Excel">Excel</button>
+      <button class="chip" data-filter="Teams">Teams</button>
+      <button class="chip" data-filter="Outlook">Outlook</button>
+    </div>
+    <div id="tips50List"></div>
+  </div>
+
+  <!-- ── ADVANCED PANEL ────────────────────────────────── -->
+  <div class="panel" id="panel-advanced">
+    <div class="filter-chips" id="advFilter">
+      <button class="chip active" data-filter="All">All</button>
+      <button class="chip" data-filter="M365 Power Moves">M365</button>
+      <button class="chip" data-filter="Word Advanced">Word</button>
+      <button class="chip" data-filter="Excel Advanced">Excel</button>
+      <button class="chip" data-filter="Teams Advanced">Teams</button>
+      <button class="chip" data-filter="Outlook Advanced">Outlook</button>
+    </div>
+    <div id="advancedList"></div>
+  </div>
+
+  <!-- ── BOOKMARKS PANEL ───────────────────────────────── -->
+  <div class="panel" id="panel-bookmarks">
+    <div id="bookmarksList"></div>
+  </div>
+
+  <!-- ── SEARCH PANEL ──────────────────────────────────── -->
+  <div class="panel" id="panel-search">
+    <div id="searchResults"></div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+// ─── STATE ──────────────────────────────────────────────────
+let bookmarks = JSON.parse(localStorage.getItem('m365_bookmarks') || '[]');
+let activePanel = 'prompts';
+let searchActive = false;
+let tipsFilter = 'All';
+let advFilter = 'All';
+
+// ─── ACCENT CYCLE ────────────────────────────────────────────
+const accents = ['ac1','ac2','ac3','ac4','ac5','ac6'];
+function ac(i){ return accents[i % accents.length]; }
+
+// ─── ICONS (inline SVG strings) ─────────────────────────────
+const SVG = {
+  bookmark: (filled) => `<svg width="14" height="14" viewBox="0 0 24 24" fill="${filled?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M17 3H7a2 2 0 0 0-2 2v16l7-3 7 3V5a2 2 0 0 0-2-2z"/></svg>`,
+  copy: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+  check: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`,
+};
+
+// ─── SAVE BOOKMARKS ───────────────────────────────────────────
+function saveBookmarks(){
+  localStorage.setItem('m365_bookmarks', JSON.stringify(bookmarks));
+  updateBookmarkCount();
+}
+
+function isBookmarked(id){ return bookmarks.some(b => b.id === id); }
+
+function toggleBookmark(id, obj, type){
+  if(isBookmarked(id)){
+    bookmarks = bookmarks.filter(b => b.id !== id);
+    showToast('Removed from Saved');
+  } else {
+    bookmarks.push({id, type, ...obj});
+    showToast('Saved ✓');
+  }
+  saveBookmarks();
+  // Update all bookmark buttons with this id
+  document.querySelectorAll(`[data-bid="${id}"]`).forEach(btn => {
+    btn.classList.toggle('bookmarked', isBookmarked(id));
+    btn.innerHTML = SVG.bookmark(isBookmarked(id));
+  });
+  if(activePanel === 'bookmarks') renderBookmarks();
+}
+
+function updateBookmarkCount(){
+  const c = bookmarks.length;
+  const el = document.getElementById('bookmarkCount');
+  el.textContent = c;
+  el.classList.toggle('show', c > 0);
+}
+
+// ─── TOAST ────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ─── COPY ─────────────────────────────────────────────────────
+function copyText(text, btn){
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = SVG.check;
+    btn.classList.add('copied');
+    showToast('Copied to clipboard ✓');
+    setTimeout(() => { btn.innerHTML = SVG.copy; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ─── RENDER PROMPTS ───────────────────────────────────────────
+function renderPrompts(data){
+  const container = document.getElementById('panel-prompts');
+  container.innerHTML = '';
+  if(!data.length){
+    container.innerHTML = emptyState('No prompts found');
+    return;
+  }
+  data.forEach((p, i) => {
+    const bm = isBookmarked(p.id);
+    // Format prompt with placeholder spans
+    const fmtPrompt = p.prompt.replace(/\[([^\]]+)\]/g,
+      '<span class="prompt-placeholder">[$1]</span>');
+    const tipsHtml = p.tips.map(t =>
+      `<div class="prompt-tip"><span class="tip-dot"></span><span>${t}</span></div>`
+    ).join('');
+
+    const card = document.createElement('div');
+    card.className = `card ${ac(i)}`;
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="card-head-icon">${p.icon}</div>
+        <div class="card-head-meta">
+          <div class="card-head-label">${p.app}</div>
+          <div class="card-head-title">${p.title}</div>
+          <div class="card-head-sub">${p.subtitle}</div>
+        </div>
+        <div class="card-head-actions">
+          <button class="btn-icon ${bm?'bookmarked':''}" data-bid="${p.id}"
+            onclick="toggleBookmark('${p.id}',{title:'${p.title.replace(/'/g,"\\'")}',icon:'${p.icon}',prompt:\`${p.prompt.replace(/`/g,'\\`')}\`,tips:${JSON.stringify(p.tips)}}, 'prompt')"
+          >${SVG.bookmark(bm)}</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-text" id="pt_${p.id}">${fmtPrompt}</div>
+        <div style="margin-top:8px;display:flex;justify-content:flex-end;">
+          <button class="btn-icon" id="cp_${p.id}"
+            onclick="copyPrompt('${p.id}')"
+          >${SVG.copy} <span style="font-family:'DM Mono',monospace;font-size:.65rem;margin-left:4px;color:var(--muted);">Copy</span></button>
+        </div>
+        <div class="prompt-tips">${tipsHtml}</div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function copyPrompt(id){
+  const p = APP_DATA.prompts.find(x => x.id === id);
+  if(!p) return;
+  const btn = document.getElementById('cp_' + id);
+  copyText(p.prompt, btn);
+}
+
+// ─── RENDER TIPS ─────────────────────────────────────────────
+function renderTips(data, containerId, accentOffset){
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  if(!data.length){
+    container.innerHTML = emptyState('No tips found');
+    return;
+  }
+  // Group by category if showing all
+  let groups = {};
+  data.forEach(t => {
+    const key = t.section || t.cat;
+    if(!groups[key]) groups[key] = [];
+    groups[key].push(t);
+  });
+
+  let idx = accentOffset || 0;
+  Object.entries(groups).forEach(([groupName, items]) => {
+    if(Object.keys(groups).length > 1){
+      const gl = document.createElement('div');
+      gl.className = 'group-label';
+      gl.textContent = groupName;
+      container.appendChild(gl);
+    }
+    items.forEach(t => {
+      const bm = isBookmarked(t.id);
+      const acClass = ac(idx++);
+      const row = document.createElement('div');
+      row.className = `tip-row ${acClass}`;
+      row.id = 'tr_' + t.id;
+
+      const hasDetail = t.body || t.desc;
+      const exHtml = t.example ? `<div class="tip-example"><div class="tip-example-label">Example</div>${t.example}</div>` : '';
+      const detailHtml = hasDetail ? `
+        <div class="tip-row-detail">
+          ${t.body || t.desc || ''}
+          ${exHtml}
+        </div>` : '';
+
+      row.innerHTML = `
+        <div class="tip-row-head" onclick="toggleTip('${t.id}')">
+          <span class="tip-row-num">${t.num}</span>
+          <span class="tip-row-title">${t.title}</span>
+          <div class="tip-row-actions" onclick="event.stopPropagation()">
+            <button class="btn-icon ${bm?'bookmarked':''}" data-bid="${t.id}"
+              onclick="toggleBookmark('${t.id}',{title:'${t.title.replace(/'/g,"\\'")}',num:'${t.num}',body:'${(t.body||t.desc||'').replace(/'/g,"\\'")}'},'tip')"
+            >${SVG.bookmark(bm)}</button>
+            <button class="btn-icon" onclick="copyText('${(t.title).replace(/'/g,"\\'")}', this)">${SVG.copy}</button>
+          </div>
+          ${hasDetail ? '<span class="tip-row-chevron">▼</span>' : ''}
+        </div>
+        ${detailHtml}`;
+      container.appendChild(row);
+    });
+  });
+}
+
+function toggleTip(id){
+  const row = document.getElementById('tr_' + id);
+  if(!row) return;
+  const wasOpen = row.classList.contains('open');
+  // Close siblings
+  row.closest('[id]').querySelectorAll('.tip-row.open').forEach(r => r.classList.remove('open'));
+  if(!wasOpen) row.classList.add('open');
+}
+
+// ─── RENDER BOOKMARKS ─────────────────────────────────────────
+function renderBookmarks(){
+  const container = document.getElementById('bookmarksList');
+  container.innerHTML = '';
+  if(!bookmarks.length){
+    container.innerHTML = `<div class="empty-state">
+      <div class="e-icon">🔖</div>
+      <p>No saved items yet.<br>Tap the bookmark icon on any tip or prompt to save it here.</p>
+    </div>`;
+    return;
+  }
+
+  const prompts = bookmarks.filter(b => b.type === 'prompt');
+  const tips = bookmarks.filter(b => b.type === 'tip');
+
+  if(prompts.length){
+    const gl = document.createElement('div');
+    gl.className = 'group-label';
+    gl.textContent = 'Saved Prompts';
+    container.appendChild(gl);
+    prompts.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = `card ${ac(i)}`;
+      card.innerHTML = `
+        <div class="card-head">
+          <div class="card-head-meta">
+            <div class="card-head-label">Copilot Prompt</div>
+            <div class="card-head-title">${p.title}</div>
+          </div>
+          <div class="card-head-actions">
+            <button class="btn-icon bookmarked" data-bid="${p.id}"
+              onclick="toggleBookmark('${p.id}',{},'prompt')"
+            >${SVG.bookmark(true)}</button>
+          </div>
+        </div>
+        <div class="prompt-body">
+          <div class="prompt-text" style="font-size:.68rem;">${(p.prompt||'').replace(/\[([^\]]+)\]/g,'<span class="prompt-placeholder">[$1]</span>')}</div>
+          <div style="margin-top:8px;display:flex;justify-content:flex-end;">
+            <button class="btn-icon" onclick="copyText(\`${(p.prompt||'').replace(/`/g,'\\`')}\`,this)">${SVG.copy}</button>
+          </div>
+        </div>`;
+      container.appendChild(card);
+    });
+  }
+
+  if(tips.length){
+    const gl2 = document.createElement('div');
+    gl2.className = 'group-label';
+    gl2.textContent = 'Saved Tips';
+    container.appendChild(gl2);
+    tips.forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = `tip-row ${ac(i)}`;
+      row.id = 'tr_bm_' + t.id;
+      row.innerHTML = `
+        <div class="tip-row-head" onclick="toggleTip('bm_${t.id}')">
+          <span class="tip-row-num">${t.num || '—'}</span>
+          <span class="tip-row-title">${t.title}</span>
+          <div class="tip-row-actions" onclick="event.stopPropagation()">
+            <button class="btn-icon bookmarked" data-bid="${t.id}"
+              onclick="toggleBookmark('${t.id}',{},'tip')"
+            >${SVG.bookmark(true)}</button>
+          </div>
+          ${t.body ? '<span class="tip-row-chevron">▼</span>' : ''}
+        </div>
+        ${t.body ? `<div class="tip-row-detail">${t.body}</div>` : ''}`;
+      container.appendChild(row);
+    });
+  }
+}
+
+// ─── EMPTY STATE ─────────────────────────────────────────────
+function emptyState(msg){
+  return `<div class="empty-state"><div class="e-icon">🔍</div><p>${msg}</p></div>`;
+}
+
+// ─── SEARCH ──────────────────────────────────────────────────
+function doSearch(q){
+  const container = document.getElementById('searchResults');
+  container.innerHTML = '';
+  if(!q.trim()){
+    showPanel(activePanel === 'search' ? 'prompts' : activePanel);
+    return;
+  }
+  const ql = q.toLowerCase();
+  let results = [];
+
+  APP_DATA.prompts.forEach(p => {
+    if(p.title.toLowerCase().includes(ql) || p.prompt.toLowerCase().includes(ql) ||
+       p.subtitle.toLowerCase().includes(ql) || p.app.toLowerCase().includes(ql)){
+      results.push({type:'prompt', data:p});
+    }
+  });
+  APP_DATA.tips.forEach(t => {
+    if(t.title.toLowerCase().includes(ql) || (t.body||'').toLowerCase().includes(ql) ||
+       t.cat.toLowerCase().includes(ql)){
+      results.push({type:'tip', data:t});
+    }
+  });
+  APP_DATA.advanced.forEach(a => {
+    if(a.title.toLowerCase().includes(ql) || (a.desc||'').toLowerCase().includes(ql) ||
+       a.section.toLowerCase().includes(ql)){
+      results.push({type:'advanced', data:a});
+    }
+  });
+
+  showPanel('search');
+
+  if(!results.length){
+    container.innerHTML = emptyState(`No results for "${q}"`);
+    return;
+  }
+
+  const countEl = document.createElement('div');
+  countEl.className = 'group-label';
+  countEl.textContent = `${results.length} result${results.length!==1?'s':''} for "${q}"`;
+  container.appendChild(countEl);
+
+  results.forEach((r, i) => {
+    if(r.type === 'prompt'){
+      const bm = isBookmarked(r.data.id);
+      const card = document.createElement('div');
+      card.className = `card ${ac(i)}`;
+      card.innerHTML = `
+        <div class="card-head">
+          <div class="card-head-icon">${r.data.icon}</div>
+          <div class="card-head-meta">
+            <div style="margin-bottom:4px;"><span class="search-tag tag-prompt">Prompt</span></div>
+            <div class="card-head-title">${highlight(r.data.title, q)}</div>
+            <div class="card-head-sub">${r.data.app}</div>
+          </div>
+          <div class="card-head-actions">
+            <button class="btn-icon ${bm?'bookmarked':''}" data-bid="${r.data.id}"
+              onclick="toggleBookmark('${r.data.id}',{title:'${r.data.title.replace(/'/g,"\\'")}',icon:'${r.data.icon}',prompt:\`${r.data.prompt.replace(/`/g,'\\`')}\`},'prompt')"
+            >${SVG.bookmark(bm)}</button>
+            <button class="btn-icon" onclick="copyText(\`${r.data.prompt.replace(/`/g,'\\`')}\`,this)">${SVG.copy}</button>
+          </div>
+        </div>`;
+      container.appendChild(card);
+    } else {
+      const d = r.data;
+      const bm = isBookmarked(d.id);
+      const row = document.createElement('div');
+      row.className = `tip-row ${ac(i)}`;
+      row.id = 'tr_s_' + d.id;
+      const tag = r.type === 'tip' ? 'tag-tip' : 'tag-advanced';
+      const tagLabel = r.type === 'tip' ? 'Top 50' : 'Advanced';
+      const detail = d.body || d.desc || '';
+      const ex = d.example ? `<div class="tip-example"><div class="tip-example-label">Example</div>${d.example}</div>` : '';
+      row.innerHTML = `
+        <div class="tip-row-head" onclick="toggleTip('s_${d.id}')">
+          <span class="tip-row-num">${d.num}</span>
+          <div style="flex:1;min-width:0;">
+            <div style="margin-bottom:3px;"><span class="search-tag ${tag}">${tagLabel}</span></div>
+            <div class="tip-row-title">${highlight(d.title, q)}</div>
+          </div>
+          <div class="tip-row-actions" onclick="event.stopPropagation()">
+            <button class="btn-icon ${bm?'bookmarked':''}" data-bid="${d.id}"
+              onclick="toggleBookmark('${d.id}',{title:'${d.title.replace(/'/g,"\\'")}',num:'${d.num}',body:'${detail.replace(/'/g,"\\'")}'},'tip')"
+            >${SVG.bookmark(bm)}</button>
+          </div>
+          ${detail ? '<span class="tip-row-chevron">▼</span>' : ''}
+        </div>
+        ${detail ? `<div class="tip-row-detail">${highlight(detail,q)}${ex}</div>` : ''}`;
+      container.appendChild(row);
+    }
+  });
+}
+
+function highlight(text, q){
+  if(!q) return text;
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<mark style="background:rgba(255,185,0,.25);color:var(--c2);border-radius:2px;">$1</mark>');
+}
+
+// ─── PANEL SWITCHING ──────────────────────────────────────────
+function showPanel(name){
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.panel === name);
+  });
+  if(name !== 'search') activePanel = name;
+  document.getElementById('scrollArea').scrollTop = 0;
+  if(name === 'bookmarks') renderBookmarks();
+}
+
+// ─── FILTER CHIPS ─────────────────────────────────────────────
+function setupChips(filterId, listRenderer){
+  document.getElementById(filterId).addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if(!chip) return;
+    document.querySelectorAll(`#${filterId} .chip`).forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    listRenderer(chip.dataset.filter);
+  });
+}
+
+function renderTips50(filter){
+  tipsFilter = filter;
+  const data = filter === 'All' ? APP_DATA.tips : APP_DATA.tips.filter(t => t.cat === filter);
+  renderTips(data, 'tips50List', 0);
+}
+
+function renderAdvanced(filter){
+  advFilter = filter;
+  const data = filter === 'All' ? APP_DATA.advanced : APP_DATA.advanced.filter(a => a.section === filter);
+  renderTips(data, 'advancedList', 3);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+function init(){
+  renderPrompts(APP_DATA.prompts);
+  renderTips50('All');
+  renderAdvanced('All');
+  updateBookmarkCount();
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = btn.dataset.panel;
+      if(document.getElementById('searchInput').value.trim()){
+        document.getElementById('searchInput').value = '';
+      }
+      showPanel(p);
+    });
+  });
+
+  // Bookmark view button
+  document.getElementById('btnBookmarks').addEventListener('click', () => {
+    showPanel('bookmarks');
+  });
+
+  // Search
+  let searchDebounce;
+  document.getElementById('searchInput').addEventListener('input', e => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => doSearch(e.target.value), 250);
+  });
+
+  // Filter chips
+  setupChips('tipsFilter', renderTips50);
+  setupChips('advFilter', renderAdvanced);
+
+  // URL section param
+  const sp = new URLSearchParams(location.search).get('section');
+  if(sp === 'tips') showPanel('tips50');
+  else if(sp === 'advanced') showPanel('advanced');
+}
+
+// ─── PWA INSTALL ──────────────────────────────────────────────
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById('installBanner');
+  if(!localStorage.getItem('m365_dismissed_install')){
+    banner.style.display = 'block';
+  }
+});
+
+document.getElementById('btnInstall').addEventListener('click', () => {
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+      document.getElementById('installBanner').style.display = 'none';
+    });
+  }
+});
+
+document.getElementById('btnDismiss').addEventListener('click', () => {
+  document.getElementById('installBanner').style.display = 'none';
+  localStorage.setItem('m365_dismissed_install', '1');
+});
+
+// ─── SERVICE WORKER ───────────────────────────────────────────
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').catch(console.warn);
+}
+
+init();
+</script>
+</body>
+</html>

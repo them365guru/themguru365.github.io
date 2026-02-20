@@ -1,0 +1,46 @@
+{
+  "name": "M365 Guru — Power User Hub",
+  "short_name": "M365 Guru",
+  "description": "Copilot prompts, top tips, and advanced productivity guides for Microsoft 365 power users.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0e1a",
+  "theme_color": "#0078d4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "education", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Copilot Prompts",
+      "short_name": "Prompts",
+      "description": "Open Copilot prompt templates",
+      "url": "./index.html?section=prompts"
+    },
+    {
+      "name": "Top 50 Tips",
+      "short_name": "Tips",
+      "description": "Browse top 50 M365 tips",
+      "url": "./index.html?section=tips"
+    },
+    {
+      "name": "Advanced Guide",
+      "short_name": "Advanced",
+      "description": "Advanced power-user guide",
+      "url": "./index.html?section=advanced"
+    }
+  ]
+}
